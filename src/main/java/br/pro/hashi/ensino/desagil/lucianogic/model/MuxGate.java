@@ -28,12 +28,12 @@ public class MuxGate extends Gate {
 			nandGate_2.connect(emitter, 0);
 		}
 		else if(index == 1) {
+			nandGate_3.connect(emitter, 0);
+		}
+		else {
 			nandGate_1.connect(emitter, 0);
 			nandGate_1.connect(emitter, 1);
 			nandGate_3.connect(emitter, 1);
-		}
-		else {
-			nandGate_3.connect(emitter, 0);
 		}
 	}
 }
