@@ -1,23 +1,26 @@
 package br.pro.hashi.ensino.desagil.lucianogic.model;
 
 public class AndGate extends Gate {
-	private NandGate nandGate;
-	private NotGate notGate;
+	private NandGate nandLeft;
+	private NandGate nandRight;
 
 	public AndGate() {
 		super(2);
-		nandGate = new NandGate();
-		notGate = new NotGate();
-		notGate.connect(nandGate, 0);
-	}
+		nandLeft = new NandGate();
 
+		nandRight = new NandGate();
+		nandRight.connect(nandLeft, 0);
+		nandRight.connect(nandLeft, 1);
+		name = "AndGate";
+	}
+	
 	@Override
 	public boolean read() {
-		return notGate.read();
+		return nandRight.read();
 	}
 
 	@Override
 	protected void doConnect(Emitter emitter, int index) {
-		nandGate.connect(emitter, index);
+		nandLeft.connect(emitter, index);
 	}
 }

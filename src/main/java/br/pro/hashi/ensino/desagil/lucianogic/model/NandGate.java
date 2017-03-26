@@ -6,6 +6,7 @@ public class NandGate extends Gate {
 	public NandGate() {
 		super(2);
 		emitters = new Emitter[2];
+		name = "NandGate";
 	}
 
 	@Override

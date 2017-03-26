@@ -1,37 +1,44 @@
 package br.pro.hashi.ensino.desagil.lucianogic.model;
 
 public class XorGate extends Gate {
-	private NandGate nandGate_1;
-	private NandGate nandGate_2;
-	private NandGate nandGate_3;
-	private NandGate nandGate_4;
+	private NandGate nandLeft;
+	private NandGate nandTop;
+	private NandGate nandBottom;
+	private NandGate nandRight;
 
 	public XorGate() {
 		super(2);
-		nandGate_1 = new NandGate();
-		nandGate_2 = new NandGate();
-		nandGate_3 = new NandGate();
-		nandGate_4 = new NandGate();
-		nandGate_2.connect(nandGate_1, 0);
-		nandGate_3.connect(nandGate_1, 0);
-		nandGate_4.connect(nandGate_2, 0);
-		nandGate_4.connect(nandGate_3, 1);
+
+		nandLeft = new NandGate();
+
+		nandTop = new NandGate();
+		nandTop.connect(nandLeft, 1);
+
+		nandBottom = new NandGate();
+		nandBottom.connect(nandLeft, 0);
+
+		nandRight = new NandGate();
+		nandRight.connect(nandTop, 0);
+		nandRight.connect(nandBottom, 1);
+		name = "XorGate";
 	}
 
 	@Override
 	public boolean read() {
-		return nandGate_4.read();
+		return nandRight.read();
 	}
 
 	@Override
 	protected void doConnect(Emitter emitter, int index) {
-		if(index == 0) {
-			nandGate_1.connect(emitter, 0);
-			nandGate_2.connect(emitter, 1);
-		}
-		else {
-			nandGate_1.connect(emitter, 1);
-			nandGate_3.connect(emitter, 1);
+		switch(index) {
+		case 0:
+			nandTop.connect(emitter, 0);
+			nandLeft.connect(emitter, 0);
+			break;
+		case 1:
+			nandLeft.connect(emitter, 1);
+			nandBottom.connect(emitter, 1);
+			break;
 		}
 	}
 }

@@ -1,33 +1,39 @@
 package br.pro.hashi.ensino.desagil.lucianogic.model;
 
 public class OrGate extends Gate {
-	private NandGate nandGate_1;
-	private NandGate nandGate_2;
-	private NandGate nandGate_3;
+	private NandGate nandTop;
+	private NandGate nandBottom;
+	private NandGate nandRight;
 
 	public OrGate() {
 		super(2);
-		nandGate_1 = new NandGate();
-		nandGate_2 = new NandGate();
-		nandGate_3 = new NandGate();
-		nandGate_3.connect(nandGate_1, 0);
-		nandGate_3.connect(nandGate_2, 1);
+
+		nandTop = new NandGate();
+
+		nandBottom = new NandGate();
+
+		nandRight = new NandGate();
+		nandRight.connect(nandTop, 0);
+		nandRight.connect(nandBottom, 1);
+		name = "OrGate";
 	}
 
 	@Override
 	public boolean read() {
-		return nandGate_3.read();
+		return nandRight.read();
 	}
 
 	@Override
 	protected void doConnect(Emitter emitter, int index) {
-		if(index == 0) {
-			nandGate_1.connect(emitter, 0);
-			nandGate_1.connect(emitter, 1);
-		}
-		else {
-			nandGate_2.connect(emitter, 0);
-			nandGate_2.connect(emitter, 1);
+		switch(index) {
+		case 0:
+			nandTop.connect(emitter, 0);
+			nandTop.connect(emitter, 1);
+			break;
+		case 1:
+			nandBottom.connect(emitter, 0);
+			nandBottom.connect(emitter, 1);
+			break;
 		}
 	}
 }
