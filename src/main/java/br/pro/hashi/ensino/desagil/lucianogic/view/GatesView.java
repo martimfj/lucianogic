@@ -1,7 +1,7 @@
 package br.pro.hashi.ensino.desagil.lucianogic.view;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -9,12 +9,13 @@ import javax.swing.JPanel;
 import javax.swing.JCheckBox;
 
 import br.pro.hashi.ensino.desagil.lucianogic.model.Gate;
-import br.pro.hashi.ensino.desagil.lucianogic.view.MainView;
+import br.pro.hashi.ensino.desagil.lucianogic.model.Switch;
+
 
 
 // Esta classe representa a interface de uma calculadora de densidade, com
 // os dois campos de entrada (peso e raio) e o campo de saida (resultado).
-public class GatesView extends JPanel implements KeyListener {
+public class GatesView extends JPanel implements ItemListener {
 
 	// Necessario para serializar objetos desta classe.
 	private static final long serialVersionUID = 1L;
@@ -27,13 +28,31 @@ public class GatesView extends JPanel implements KeyListener {
 	private	JCheckBox inputBoxC;
 	private	JCheckBox outputBox;
 	
+	private Switch buttonA;
+	private Switch buttonB;
+	private Switch buttonC;
+	
 	private Gate gate;
-
 
 	public GatesView(Gate gate) {
 		this.gate = gate;
 		int size = gate.getSize();
-
+		
+		buttonA = new Switch();
+		buttonB = new Switch();
+		buttonC = new Switch();
+		
+		gate.connect(buttonA, 0);
+		
+		if(size == 2){
+			gate.connect(buttonB, 1);
+		}
+		
+		if(size == 3){
+			gate.connect(buttonC, 2);
+		}
+		
+		
 		// A componente JLabel representa simplesmente um texto fixo.
 		// https://docs.oracle.com/javase/tutorial/uiswing/components/label.html
 		JLabel inputLabel = new JLabel("Entradas:");
@@ -44,8 +63,11 @@ public class GatesView extends JPanel implements KeyListener {
 		inputBoxB = new JCheckBox("B");
 		inputBoxC = new JCheckBox("Selector");
 		
-		outputBox = new JCheckBox();
-		outputBox.setSelected(true);
+		inputBoxA.addItemListener(this);
+		inputBoxB.addItemListener(this);
+		inputBoxC.addItemListener(this);
+		
+		outputBox = new JCheckBox("Saída");
 		outputBox.setEnabled(false);
 
 
@@ -57,35 +79,56 @@ public class GatesView extends JPanel implements KeyListener {
 
 		add(inputBoxA);
 		add(inputBoxB);
+		
+		if(size == 2){
+			add(inputBoxB);
+		}
+		else {
+			remove(inputBoxB);
+		}
+		
 		if(size == 3){
 			add(inputBoxC);
 		}
 		else {
 			remove(inputBoxC);
 		}
+		
 		add(outputLabel);
 		add(outputBox);
 		
-//		int outcome = (gate.read()) ? 1 : 0;  (Converte booleana pra int)
-//		outputBox.setText(""+outcome); 		  (Seta o texto da outputBox)
-		outputBox.setText("Output");
-	}
-
-
-	@Override
-	public void keyPressed(KeyEvent arg0) {
+		if(gate.read() == false){
+			outputBox.setSelected(false);
+		}
+		if(gate.read() == true){
+			outputBox.setSelected(true);
+		}
 		
 	}
 
 
 	@Override
-	public void keyReleased(KeyEvent arg0) {
+	public void itemStateChanged(ItemEvent e) {
+		Object source = e.getItemSelectable();
+		if(source == inputBoxA){
+			buttonA.setOn(inputBoxA.isSelected());
+		}
 		
+		if(source == inputBoxB){
+			buttonB.setOn(inputBoxB.isSelected());
+		}
+		
+		if(source == inputBoxC){
+			buttonC.setOn(inputBoxC.isSelected());
+		}
+		
+		if(gate.read() == false){
+			outputBox.setSelected(false);
+		}
+		
+		if(gate.read() == true){
+			outputBox.setSelected(true);
+		}
 	}
 
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		
-	}
 }
