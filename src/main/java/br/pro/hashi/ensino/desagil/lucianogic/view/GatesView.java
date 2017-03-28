@@ -44,7 +44,7 @@ public class GatesView extends JPanel implements ItemListener {
 		
 		gate.connect(buttonA, 0);
 		
-		if(size == 2){
+		if(size == 2 || size == 3){
 			gate.connect(buttonB, 1);
 		}
 		
@@ -80,7 +80,7 @@ public class GatesView extends JPanel implements ItemListener {
 		add(inputBoxA);
 		add(inputBoxB);
 		
-		if(size == 2){
+		if(size == 2 || size == 3){
 			add(inputBoxB);
 		}
 		else {
