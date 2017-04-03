@@ -50,7 +50,7 @@ public class GatesView extends FixedPanel implements ItemListener {
 		this.gate = gate;
 		int size = gate.getSize();
 		
-		//image = loadImage(gate.toString());
+		image = loadImage(gate.toString());
 		
 		buttonA = new Switch();
 		buttonB = new Switch();
@@ -77,24 +77,24 @@ public class GatesView extends FixedPanel implements ItemListener {
 		outputBox = new JCheckBox("Saída");
 		outputBox.setEnabled(false);
 
-		add(inputBoxA,50,50, 30, 30);
-		add(inputBoxB,50,30, 30, 30);
+		add(inputBoxA,40,118, 20, 20);
+		add(inputBoxB,40,220, 20, 20);
 		
 		if(size == 2 || size == 3){
-			add(inputBoxB,50,30, 30, 30);
+			add(inputBoxB,40,220, 20, 20);
 		}
 		else {
 			remove(inputBoxB);
 		}
 		
 		if(size == 3){
-			add(inputBoxC,50,70, 30, 30);
+			add(inputBoxC,245,320, 20, 20);
 		}
 		else {
 			remove(inputBoxC);
 		}
 		
-		add(outputBox,50,100, 30, 30);
+		add(outputBox,400,180, 20, 20);
 		
 		if(gate.read() == false){
 			outputBox.setSelected(false);
