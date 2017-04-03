@@ -25,12 +25,14 @@ import br.pro.hashi.ensino.desagil.lucianogic.model.Switch;
 
 // Esta classe representa a interface de uma calculadora de densidade, com
 // os dois campos de entrada (peso e raio) e o campo de saida (resultado).
-public class GatesView extends FixedPanel implements ItemListener {
+public class GatesView extends FixedPanel implements ItemListener, ActionListener {
 
 	// Necessario para serializar objetos desta classe.
 	private static final long serialVersionUID = 1L;
 
 	private Image image;
+	
+	private JButton button;
 
 	// A componente JTextField representa um campo para digitacao de texto.
 	// https://docs.oracle.com/javase/tutorial/uiswing/components/textfield.html
@@ -76,8 +78,10 @@ public class GatesView extends FixedPanel implements ItemListener {
 		inputBoxB.addItemListener(this);
 		inputBoxC.addItemListener(this);
 		
-		outputBox = new JCheckBox("Saída");
-		outputBox.setEnabled(false);
+		button = new JButton();
+		button.setOpaque(true);
+		button.addActionListener(this);
+		add(button, 438, 160, 40, 40);
 
 		add(inputBoxA,40,118, 20, 20);
 		add(inputBoxB,40,220, 20, 20);
@@ -97,17 +101,16 @@ public class GatesView extends FixedPanel implements ItemListener {
 			remove(inputBoxC);
 		}
 		
-		add(outputBox,400,180, 20, 20);
+		add(button,438, 160, 40, 40);
 		
 		if(gate.read() == false){
-			outputBox.setSelected(false);
+			button.setEnabled(false);
 		}
 		if(gate.read() == true){
-			outputBox.setSelected(true);
+			button.setEnabled(true);
 		}
 		
 	}
-
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
@@ -125,11 +128,19 @@ public class GatesView extends FixedPanel implements ItemListener {
 		}
 		
 		if(gate.read() == false){
-			outputBox.setSelected(false);
+			button.setEnabled(false);
 		}
 		
 		if(gate.read() == true){
-			outputBox.setSelected(true);
+			button.setEnabled(true);
+		}
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Color color = JColorChooser.showDialog(this, null, null);
+		if(color != null) {
+			button.setBackground(color);
 		}
 	}
 	
