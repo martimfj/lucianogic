@@ -7,8 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -16,15 +14,12 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 import br.pro.hashi.ensino.desagil.lucianogic.model.Gate;
 import br.pro.hashi.ensino.desagil.lucianogic.model.Switch;
 
-
-
-// Esta classe representa a interface de uma calculadora de densidade, com
-// os dois campos de entrada (peso e raio) e o campo de saida (resultado).
+// Esta classe representa a interface gráfica de um simulador de portas lógicas
+// há dois campos de entrada (A e B) e a saída, que se positiva, acende um LED.
 public class GatesView extends FixedPanel implements ItemListener, ActionListener {
 
 	// Necessario para serializar objetos desta classe.
@@ -39,7 +34,6 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 	private	JCheckBox inputBoxA;
 	private	JCheckBox inputBoxB;
 	private	JCheckBox inputBoxC;
-	private	JCheckBox outputBox;
 	
 	private Switch buttonA;
 	private Switch buttonB;
@@ -68,16 +62,19 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 			gate.connect(buttonC, 2);
 		}
 		
+		//Checkbox A, B e Selector
 		inputBoxA = new JCheckBox("A");
 		inputBoxB = new JCheckBox("B");
 		inputBoxC = new JCheckBox("Selector");
 		
 		JLabel selector = new JLabel("Selector");
 		
+		//Checkbox A, B e Selector sendo ouvidos
 		inputBoxA.addItemListener(this);
 		inputBoxB.addItemListener(this);
 		inputBoxC.addItemListener(this);
 		
+		//Botão LED
 		button = new JButton();
 		button.setOpaque(true);
 		button.addActionListener(this);
@@ -136,6 +133,7 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 		}
 	}
 	
+	//Se o botão for clicado, abre-se a opção de escolher o seu background
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Color color = JColorChooser.showDialog(this, null, null);
