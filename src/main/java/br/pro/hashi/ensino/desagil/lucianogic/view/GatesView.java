@@ -70,6 +70,8 @@ public class GatesView extends FixedPanel implements ItemListener {
 		inputBoxB = new JCheckBox("B");
 		inputBoxC = new JCheckBox("Selector");
 		
+		JLabel selector = new JLabel("Selector");
+		
 		inputBoxA.addItemListener(this);
 		inputBoxB.addItemListener(this);
 		inputBoxC.addItemListener(this);
@@ -89,6 +91,7 @@ public class GatesView extends FixedPanel implements ItemListener {
 		
 		if(size == 3){
 			add(inputBoxC,245,320, 20, 20);
+			add(selector,270,320, 60, 20);
 		}
 		else {
 			remove(inputBoxC);
