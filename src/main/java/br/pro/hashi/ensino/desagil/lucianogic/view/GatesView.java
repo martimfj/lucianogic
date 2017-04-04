@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 
 import br.pro.hashi.ensino.desagil.lucianogic.model.Gate;
 import br.pro.hashi.ensino.desagil.lucianogic.model.Switch;
+import br.pro.hashi.ensino.desagil.lucianogic.model.LED;
 
 // Esta classe representa a interface gráfica de um simulador de portas lógicas
 // há dois campos de entrada (A e B) e a saída, que se positiva, acende um LED.
@@ -26,6 +27,8 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 	private static final long serialVersionUID = 1L;
 
 	private Image image;
+	
+	private LED output;
 	
 	private JButton button;
 
@@ -78,7 +81,7 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 		button = new JButton();
 		button.setOpaque(true);
 		button.addActionListener(this);
-		add(button, 500, 160, 40, 40);
+		add(button, 520, 160, 40, 40);
 
 		add(inputBoxA,40,118, 20, 20);
 		add(inputBoxB,40,220, 20, 20);
@@ -98,13 +101,15 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 			remove(inputBoxC);
 		}
 		
-		add(button,500, 160, 40, 40);
+		add(button,520, 160, 40, 40);
 		
 		if(gate.read() == false){
 			button.setEnabled(false);
+			button.setBackground(null);
 		}
 		if(gate.read() == true){
 			button.setEnabled(true);
+			
 		}
 		
 	}
@@ -126,20 +131,26 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 			buttonC.setOn(inputBoxC.isSelected());
 		}
 		
-		if(gate.read() == false){
+		if((gate.read() == false)){
 			button.setEnabled(false);
 			button.setBackground(null);
 		}
 		
 		if(gate.read() == true){
 			button.setEnabled(true);
+			
 		}
 	}
+			
 	
 	//Se o botão for clicado, abre-se a opção de escolher o seu background
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Color color = JColorChooser.showDialog(this, null, null);
+		
+		//output.connect(gate, 0);
+		//(output.isOn() == true)
+		
 		if(color != null) {
 			button.setBackground(color);
 		if(gate.read() == false){
