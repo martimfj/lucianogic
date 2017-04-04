@@ -78,7 +78,7 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 		button = new JButton();
 		button.setOpaque(true);
 		button.addActionListener(this);
-		add(button, 438, 160, 40, 40);
+		add(button, 500, 160, 40, 40);
 
 		add(inputBoxA,40,118, 20, 20);
 		add(inputBoxB,40,220, 20, 20);
@@ -98,7 +98,7 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 			remove(inputBoxC);
 		}
 		
-		add(button,438, 160, 40, 40);
+		add(button,500, 160, 40, 40);
 		
 		if(gate.read() == false){
 			button.setEnabled(false);
@@ -114,10 +114,12 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 		Object source = e.getItemSelectable();
 		if(source == inputBoxA){
 			buttonA.setOn(inputBoxA.isSelected());
+			button.setEnabled(false);
 		}
 		
 		if(source == inputBoxB){
 			buttonB.setOn(inputBoxB.isSelected());
+			
 		}
 		
 		if(source == inputBoxC){
@@ -126,6 +128,7 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 		
 		if(gate.read() == false){
 			button.setEnabled(false);
+			button.setBackground(null);
 		}
 		
 		if(gate.read() == true){
@@ -139,6 +142,9 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 		Color color = JColorChooser.showDialog(this, null, null);
 		if(color != null) {
 			button.setBackground(color);
+		if(gate.read() == false){
+			button.setEnabled(false);			
+			}
 		}
 	}
 	
@@ -152,6 +158,7 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 	@Override
 	public void paintComponent(Graphics g) {
 		g.drawImage(image, 0, 0, 600, 360, null);
+		//g.fillRoundRect(500, 160, 40, 40, 50, 25);
 
 		// Evita bugs visuais em alguns sistemas operacionais.
 		getToolkit().sync();
