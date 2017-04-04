@@ -2,6 +2,8 @@ package br.pro.hashi.ensino.desagil.lucianogic.view;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,8 +34,6 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 	
 	private JButton button;
 
-	// A componente JTextField representa um campo para digitacao de texto.
-	// https://docs.oracle.com/javase/tutorial/uiswing/components/textfield.html
 	private	JCheckBox inputBoxA;
 	private	JCheckBox inputBoxB;
 	private	JCheckBox inputBoxC;
@@ -42,6 +42,8 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 	private Switch buttonB;
 	private Switch buttonC;
 	
+	private Color ledColor;
+	
 	private Gate gate;
 
 	public GatesView(Gate gate) {
@@ -49,11 +51,16 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 		this.gate = gate;
 		int size = gate.getSize();
 		
+		this.output = new LED(255, 255, 255);
+		output.connect(gate, 0);
+		
 		image = loadImage(gate.toString());
 		
 		buttonA = new Switch();
 		buttonB = new Switch();
 		buttonC = new Switch();
+		
+		ledColor = Color.WHITE;
 		
 		gate.connect(buttonA, 0);
 		
@@ -79,10 +86,13 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 		
 		//Botão LED
 		button = new JButton();
-		button.setOpaque(true);
 		button.addActionListener(this);
-		add(button, 520, 160, 40, 40);
-
+		button.setBackground(null);
+		button.setOpaque(true);
+	    button.setContentAreaFilled(false);
+		button.setBorderPainted(false);
+		button.setFocusPainted(false);
+		
 		add(inputBoxA,40,118, 20, 20);
 		add(inputBoxB,40,220, 20, 20);
 		
@@ -101,15 +111,12 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 			remove(inputBoxC);
 		}
 		
-		add(button,520, 160, 40, 40);
-		
-		if(gate.read() == false){
+		if(output.isOn() == false){
 			button.setEnabled(false);
-			button.setBackground(null);
 		}
-		if(gate.read() == true){
+		if(output.isOn() == true){
+			add(button, 525, 166, 30, 30);
 			button.setEnabled(true);
-			
 		}
 		
 	}
@@ -131,30 +138,25 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 			buttonC.setOn(inputBoxC.isSelected());
 		}
 		
-		if((gate.read() == false)){
+		if(gate.read() == false){
 			button.setEnabled(false);
-			button.setBackground(null);
+			ledColor = null;
 		}
 		
 		if(gate.read() == true){
+			add(button, 525, 166, 30, 30);
 			button.setEnabled(true);
-			
 		}
 	}
-			
 	
-	//Se o botão for clicado, abre-se a opção de escolher o seu background
+	//Se o botão for clicado, abre-se a opção de escolher a cor do circulo
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Color color = JColorChooser.showDialog(this, null, null);
-		
-		//output.connect(gate, 0);
-		//(output.isOn() == true)
-		
+		Color color = JColorChooser.showDialog(this, "Escolha uma cor para o LED", Color.RED);
 		if(color != null) {
-			button.setBackground(color);
-		if(gate.read() == false){
-			button.setEnabled(false);			
+			ledColor = color;
+		if(output.isOn() == false){
+			ledColor = Color.WHITE;			
 			}
 		}
 	}
@@ -169,8 +171,11 @@ public class GatesView extends FixedPanel implements ItemListener, ActionListene
 	@Override
 	public void paintComponent(Graphics g) {
 		g.drawImage(image, 0, 0, 600, 360, null);
-		//g.fillRoundRect(500, 160, 40, 40, 50, 25);
-
+		Graphics2D g2d = (Graphics2D)g;
+		g2d.setPaint(ledColor);
+		Ellipse2D.Double circle = new Ellipse2D.Double(515, 155, 50, 50);
+		g2d.fill(circle);
+		
 		// Evita bugs visuais em alguns sistemas operacionais.
 		getToolkit().sync();
 	}
